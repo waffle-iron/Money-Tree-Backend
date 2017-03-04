@@ -11,8 +11,8 @@
     "express-session": "^1.7.6"
   },
   "scripts": {
-    
-  },
+    "start": "node test.js"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bhargav00/Money-Tree-Backend.git"
