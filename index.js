@@ -110,7 +110,12 @@ function create_order(req, res) {
         connection.query("INSERT INTO orders VALUES (NULL, '" + req.body.side + " ',' " + req.body.symbol + "', '" + req.body.quantity + "', '" + req.body.limit_price + "', '" + req.body.stop_loss + "', '" + req.body.quantity + "', '" + 0 + "', '" + "open" + "', '" + req.body.et_id + "', '" + sess.pm_id + "', '" + req.body.s_id + "','" + req.body.current_price + "','" + (new Date().toLocaleString) + "')",
             function(err, rows, fields) {
                 connection.release();
-                if (err) {
+                if (!err) {
+                    res.json({
+                        status: 'succesful'
+                    });
+                    res.end();
+                } else {
                     console.log(err);
                 }
 
