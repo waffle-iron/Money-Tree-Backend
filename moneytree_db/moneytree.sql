@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 05, 2017 at 02:00 PM
--- Server version: 10.1.9-MariaDB
--- PHP Version: 5.6.15
+-- Generation Time: Mar 06, 2017 at 12:38 PM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 7.1.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -35,8 +35,32 @@ CREATE TABLE `block` (
   `stop_price` int(11) NOT NULL,
   `total_qty` int(10) NOT NULL,
   `executed_qty` int(10) NOT NULL,
-  `open_qty` int(10) NOT NULL
+  `open_qty` int(10) NOT NULL,
+  `block_timestamp` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='block details';
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `credentials`
+--
+
+CREATE TABLE `credentials` (
+  `u_id` int(10) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `access_type` varchar(50) NOT NULL,
+  `pm_id` int(10) DEFAULT NULL,
+  `et_id` int(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Stores the username password and access type of the user';
+
+--
+-- Dumping data for table `credentials`
+--
+
+INSERT INTO `credentials` (`u_id`, `username`, `password`, `access_type`, `pm_id`, `et_id`) VALUES
+(1, 'test_pm', 'test_pm', 'pm', 1, NULL),
+(2, 'test_et', 'test_et', 'et', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -96,7 +120,10 @@ CREATE TABLE `orders` (
   `allocated_qty` int(10) NOT NULL DEFAULT '0',
   `status` varchar(50) NOT NULL,
   `et_id` int(10) NOT NULL,
-  `pm_id` int(10) NOT NULL
+  `pm_id` int(10) NOT NULL,
+  `s_id` int(10) NOT NULL,
+  `current_price` float NOT NULL,
+  `order_timestamp` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='order details';
 
 -- --------------------------------------------------------
@@ -147,6 +174,7 @@ INSERT INTO `portfolio_manager` (`pm_id`, `name`, `cash_available`) VALUES
 --
 
 CREATE TABLE `stock` (
+  `s_id` int(10) NOT NULL,
   `stock_name` varchar(30) NOT NULL,
   `price` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -160,6 +188,12 @@ CREATE TABLE `stock` (
 --
 ALTER TABLE `block`
   ADD PRIMARY KEY (`block_id`);
+
+--
+-- Indexes for table `credentials`
+--
+ALTER TABLE `credentials`
+  ADD PRIMARY KEY (`u_id`);
 
 --
 -- Indexes for table `equity_trader`
@@ -193,6 +227,12 @@ ALTER TABLE `portfolio_manager`
   ADD PRIMARY KEY (`pm_id`);
 
 --
+-- Indexes for table `stock`
+--
+ALTER TABLE `stock`
+  ADD PRIMARY KEY (`s_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -201,6 +241,11 @@ ALTER TABLE `portfolio_manager`
 --
 ALTER TABLE `block`
   MODIFY `block_id` int(10) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `credentials`
+--
+ALTER TABLE `credentials`
+  MODIFY `u_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `equity_trader`
 --
