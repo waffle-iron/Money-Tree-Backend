@@ -39,7 +39,7 @@ app.use(function(req, res, next) {
 
 function login(req, res) {
     sess = req.session;
-    console.log('got request');
+    console.log('got login request');
     if (req.body.username == null || req.body.password == null) {
         res.json({
             status: 'incomplete data'
@@ -90,10 +90,41 @@ function login(req, res) {
     });
 }
 
+function create_order(req, res) {
+    sess = req.session;
+    if (req.body.side == null || req.body.s_id == null || req.body.quantity == null || req.body.pm_id == null) {
+        res.json({
+            status: 'incomplete data'
+        });
+        res.end();
+    }
+
+    pool.getConnection(function(err, connection) {
+        if (err) {
+            res.json({
+                "code": 100,
+                "status": "Error in connection database"
+            });
+            return;
+        }
+        connection.query("INSERT INTO orders VALUES (NULL, '" + req.body.s_id + " ',' " + side + "', '" + symbol + "', '" + total_qty + "', '" + limit_price + "', '" + stop_loss + "', '" + current_price + "', '" + open_quantity + "', '" + allocated_qty + "', '0', '" + et_id + "', '" + pm_id + "')",
+            function(err, rows, fields) {
+                connection.release();
+                if (err) {
+                    console.log(err);
+                }
+
+            })
+    });
+}
+
 //Server listen port  is 3000
 app.listen(3000);
 console.log("Server started on 3000 ... nn");
 //login post method
 app.post('/login', function(req, res) {
     login(req, res);
+});
+app.post('/create_order', function(req, res) {
+    create_order(req, res);
 });
