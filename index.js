@@ -55,8 +55,8 @@ function login(req, res) {
             });
             return;
         }
-        connection.query('SELECT * from login where username="' + req.body.username + '"and password="' + req.body.password + '"',
-            function(err, rows, fields) {
+        connection.query('SELECT * from credentials where username="' + req.body.username + '"and password="' + req.body.password + '"',
+            function (err, rows, fields) {
                 connection.release();
                 if (!err) {
                     if (rows.length == 1) {
