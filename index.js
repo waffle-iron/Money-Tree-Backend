@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 //Below code is to enable CORS in node server
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
@@ -45,8 +45,9 @@ function login(req, res) {
             status: 'incomplete data'
         });
         res.end();
+        return;
     }
-    pool.getConnection(function (err, connection) {
+    pool.getConnection(function(err, connection) {
         if (err) {
             res.json({
                 "code": 100,
@@ -55,7 +56,7 @@ function login(req, res) {
             return;
         }
         connection.query('SELECT * from login where username="' + req.body.username + '"and password="' + req.body.password + '"',
-            function (err, rows, fields) {
+            function(err, rows, fields) {
                 connection.release();
                 if (!err) {
                     if (rows.length == 1) {
@@ -80,7 +81,7 @@ function login(req, res) {
                     res.end();
                 }
             });
-        connection.on('error', function (err) {
+        connection.on('error', function(err) {
             res.json({
                 "status": "Error in connection database"
             });
@@ -93,6 +94,6 @@ function login(req, res) {
 app.listen(3000);
 console.log("Server started on 3000 ... nn");
 //login post method
-app.post('/login', function (req, res) {
+app.post('/login', function(req, res) {
     login(req, res);
 });
