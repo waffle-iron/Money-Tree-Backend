@@ -56,7 +56,7 @@ function login(req, res) {
             return;
         }
         connection.query('SELECT * from credentials where username="' + req.body.username + '"and password="' + req.body.password + '"',
-            function (err, rows, fields) {
+            function(err, rows, fields) {
                 connection.release();
                 if (!err) {
                     if (rows.length == 1) {
@@ -92,7 +92,7 @@ function login(req, res) {
 
 function create_order(req, res) {
     sess = req.session;
-    if (req.body.side == null || req.body.s_id == null || req.body.quantity == null || req.body.pm_id == null) {
+    if (req.body.side == null || req.body.s_id == null || req.body.quantity == null) {
         res.json({
             status: 'incomplete data'
         });
@@ -107,7 +107,7 @@ function create_order(req, res) {
             });
             return;
         }
-        connection.query("INSERT INTO orders VALUES (NULL, '" + req.body.s_id + " ',' " + side + "', '" + symbol + "', '" + total_qty + "', '" + limit_price + "', '" + stop_loss + "', '" + current_price + "', '" + open_quantity + "', '" + allocated_qty + "', '0', '" + et_id + "', '" + pm_id + "')",
+        connection.query("INSERT INTO orders VALUES (NULL, '" + req.body.side + " ',' " + req.body.symbol + "', '" + req.body.quantity + "', '" + req.body.limit_price + "', '" + req.body.stop_loss + "', '" + req.body.quantity + "', '" + 0 + "', '" + "open" + "', '" + req.body.et_id + "', '" + sess.pm_id + "', '" + req.body.s_id + "','" + req.body.current_price + "','" + (new Date().toLocaleString) + "')",
             function(err, rows, fields) {
                 connection.release();
                 if (err) {
@@ -115,6 +115,7 @@ function create_order(req, res) {
                 }
 
             })
+        res.end();
     });
 }
 
