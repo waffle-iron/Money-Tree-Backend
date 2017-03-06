@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 06, 2017 at 12:38 PM
+-- Generation Time: Mar 06, 2017 at 02:48 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 7.1.1
 
@@ -42,34 +42,13 @@ CREATE TABLE `block` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `credentials`
---
-
-CREATE TABLE `credentials` (
-  `u_id` int(10) NOT NULL,
-  `username` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `access_type` varchar(50) NOT NULL,
-  `pm_id` int(10) DEFAULT NULL,
-  `et_id` int(10) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Stores the username password and access type of the user';
-
---
--- Dumping data for table `credentials`
---
-
-INSERT INTO `credentials` (`u_id`, `username`, `password`, `access_type`, `pm_id`, `et_id`) VALUES
-(1, 'test_pm', 'test_pm', 'pm', 1, NULL),
-(2, 'test_et', 'test_et', 'et', NULL, 1);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `equity_trader`
 --
 
 CREATE TABLE `equity_trader` (
   `et_id` int(10) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(200) NOT NULL,
   `name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -77,31 +56,8 @@ CREATE TABLE `equity_trader` (
 -- Dumping data for table `equity_trader`
 --
 
-INSERT INTO `equity_trader` (`et_id`, `name`) VALUES
-(1, 'test');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `login`
---
-
-CREATE TABLE `login` (
-  `u_id` int(10) NOT NULL,
-  `username` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `access_type` varchar(50) NOT NULL,
-  `pm_id` int(10) DEFAULT NULL,
-  `et_id` int(10) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Stores the username password and access type of the user';
-
---
--- Dumping data for table `login`
---
-
-INSERT INTO `login` (`u_id`, `username`, `password`, `access_type`, `pm_id`, `et_id`) VALUES
-(1, 'test_pm', 'test_pm', 'pm', 1, NULL),
-(2, 'test_et', 'test_et', 'et', NULL, 1);
+INSERT INTO `equity_trader` (`et_id`, `username`, `password`, `name`) VALUES
+(1, 'test_et', 'afaba0afd7702fdcb35403ee679dd3f13477fa85', 'test');
 
 -- --------------------------------------------------------
 
@@ -123,7 +79,7 @@ CREATE TABLE `orders` (
   `pm_id` int(10) NOT NULL,
   `s_id` int(10) NOT NULL,
   `current_price` float NOT NULL,
-  `order_timestamp` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
+  `order_timestamp` varchar(30) NOT NULL DEFAULT 'CURRENT_TIMESTAMP(6)'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='order details';
 
 -- --------------------------------------------------------
@@ -140,13 +96,13 @@ CREATE TABLE `order_block` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pm_et`
+-- Table structure for table `pm_et_relations`
 --
 
-CREATE TABLE `pm_et` (
+CREATE TABLE `pm_et_relations` (
   `pm_id` int(10) NOT NULL,
   `et_id` int(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- --------------------------------------------------------
 
@@ -156,6 +112,8 @@ CREATE TABLE `pm_et` (
 
 CREATE TABLE `portfolio_manager` (
   `pm_id` int(10) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(200) NOT NULL,
   `name` varchar(50) NOT NULL,
   `cash_available` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -164,8 +122,8 @@ CREATE TABLE `portfolio_manager` (
 -- Dumping data for table `portfolio_manager`
 --
 
-INSERT INTO `portfolio_manager` (`pm_id`, `name`, `cash_available`) VALUES
-(1, 'Test User', 0);
+INSERT INTO `portfolio_manager` (`pm_id`, `username`, `password`, `name`, `cash_available`) VALUES
+(1, 'test_pm', '88a6a89ff2ad712f1ea0c3f27207e0435785a3cd', 'Test User', 0);
 
 -- --------------------------------------------------------
 
@@ -190,22 +148,10 @@ ALTER TABLE `block`
   ADD PRIMARY KEY (`block_id`);
 
 --
--- Indexes for table `credentials`
---
-ALTER TABLE `credentials`
-  ADD PRIMARY KEY (`u_id`);
-
---
 -- Indexes for table `equity_trader`
 --
 ALTER TABLE `equity_trader`
   ADD PRIMARY KEY (`et_id`);
-
---
--- Indexes for table `login`
---
-ALTER TABLE `login`
-  ADD PRIMARY KEY (`u_id`);
 
 --
 -- Indexes for table `orders`
@@ -242,20 +188,10 @@ ALTER TABLE `stock`
 ALTER TABLE `block`
   MODIFY `block_id` int(10) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `credentials`
---
-ALTER TABLE `credentials`
-  MODIFY `u_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
 -- AUTO_INCREMENT for table `equity_trader`
 --
 ALTER TABLE `equity_trader`
   MODIFY `et_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `login`
---
-ALTER TABLE `login`
-  MODIFY `u_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `orders`
 --
